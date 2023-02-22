@@ -8,9 +8,9 @@ const CURRENT_TIME = 'videoplayer-current-time';
 
 reloadPage();
 
-player.on('timeupdate', function(time) {
+player.on('timeupdate', throttle(function(time) {
     localStorage.setItem(CURRENT_TIME, time.seconds);
- });
+ }, 1000));
 
 function reloadPage() {
     const savedLocalTime = localStorage.getItem(CURRENT_TIME);
