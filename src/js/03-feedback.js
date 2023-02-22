@@ -4,12 +4,14 @@ const LOCAL_KEY = 'feedback-form-state';
 
 const formEl = document.querySelector('.feedback-form')
 const formData = {};
+
 const dataFromLocalStorage = JSON.parse(localStorage.getItem(LOCAL_KEY));
-form.elements.email.value = dataFromLocalStorage?.email || '';
-form.elements.message.value = dataFromLocalStorage?.message || '';
+formEl.elements.email.value = dataFromLocalStorage?.email || '';
+formEl.elements.message.value = dataFromLocalStorage?.message || '';
+
 
 formEl.addEventListener("submit", onFormSubmit);
-formEl.addEventListener("input", onFormInput);
+formEl.addEventListener("input", throttle(onFormInput, 500));
 
 function onFormSubmit(event) {
   event.preventDefault();
@@ -27,10 +29,8 @@ function onFormSubmit(event) {
 function onFormInput(event) {
     formData[event.target.name] = event.target.value;
 
-    const dataFromLocalStorage = JSON.parse(localStorage.getItem(LOCAL_KEY));
     localStorage.setItem(
       LOCAL_KEY,
       JSON.stringify({ ...dataFromLocalStorage, [event.target.name]: event.target.value })
     );
   }
-  
